@@ -39,20 +39,20 @@ jobs:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin registry.heroku.com
 
         # Compile App with Docker
-        - docker build . --tag=registry.heroku.com/demo/web
+        - docker build . --tag=registry.heroku.com/spring-boot-graalvm/web
 
         # Push to Heroku Container Registry
-        - docker push registry.heroku.com/demo/web
+        - docker push registry.heroku.com/spring-boot-graalvm/web
 
         # Give execute permission
         - chmod +x ./heroku-release.sh
 
         # Release Dockerized Native Spring Boot App on Heroku
-        - ./heroku-release.sh demo
+        - ./heroku-release.sh spring-boot-graalvm
 
         # Push to Docker Hub also, since automatic Builds there don't have anough RAM to do a docker build
         - echo "$DOCKER_HUB_TOKEN" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
-        - docker tag registry.heroku.com/demo/web rajeevmarrapu/demo:latest
-        - docker push rajeevmarrapu/demo:latest
+        - docker tag registry.heroku.com/spring-boot-graalvm/web rajeevmarrapu/spring-boot-graalvm:latest
+        - docker push rajeevmarrapu/spring-boot-graalvm:latest
 
       name: "Native Image compile in Docker on Travis & Push to Heroku Container Registry"
